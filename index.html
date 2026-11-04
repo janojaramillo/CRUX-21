@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CRUX 21</title>
+<meta name="description" content="CDSS de cardiopatías congénitas en síndrome de Down: diagnóstico clínico-ecocardiográfico, PGE1 e inotrópicos por fisiología.">
+<meta name="theme-color" content="#0d1420">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CRUX 21">
+<link rel="apple-touch-icon" id="appleIcon" href="">
+<link rel="icon" id="favIcon" href="">
+<style>
+:root{
+  --bg:#f6efe4; --card:#fffaf2; --ink:#2a211b; --mute:#7a6b5e; --line:#e6d8c5;
+  --terra:#c0603a; --terra2:#9e4426; --terra-soft:#f3dccd;
+  --navy:#0d1420; --navy2:#16223a; --gold:#d9a441;
+  --ok:#2f7d5b; --ok-soft:#dcefe5; --warn:#b7791f; --warn-soft:#fbecc9;
+  --bad:#b23a3a; --bad-soft:#f6d9d6; --info:#2d5d8a; --info-soft:#dbe7f3;
+  --serif:"Fraunces","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --r:16px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#13100d; --card:#1d1814; --ink:#f1e7da; --mute:#a8988a; --line:#3a2f27;
+    --terra:#e07a50; --terra2:#f09a72; --terra-soft:#3b2419;
+    --ok:#5cc293; --ok-soft:#173326; --warn:#e7b24f; --warn-soft:#3a2c12;
+    --bad:#ef7b7b; --bad-soft:#3d1a1a; --info:#7fb0de; --info-soft:#16283a;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#13100d; --card:#1d1814; --ink:#f1e7da; --mute:#a8988a; --line:#3a2f27;
+  --terra:#e07a50; --terra2:#f09a72; --terra-soft:#3b2419;
+  --ok:#5cc293; --ok-soft:#173326; --warn:#e7b24f; --warn-soft:#3a2c12;
+  --bad:#ef7b7b; --bad-soft:#3d1a1a; --info:#7fb0de; --info-soft:#16283a;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;overflow-x:hidden}
+button{font:inherit;color:inherit}
+h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;margin:0}
+.mono{font-family:var(--mono)}
+
+/* ---------- CARÁTULA ---------- */
+#cover{position:fixed;inset:0;z-index:50;background:radial-gradient(120% 80% at 50% 20%,#1f2f4f 0%,#0d1420 55%,#05080d 100%);color:#f4ead9;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(env(safe-area-inset-top) + 18px) 20px calc(env(safe-area-inset-bottom) + 18px);overflow:hidden;transition:opacity .6s ease, transform .6s ease}
+#cover.gone{opacity:0;transform:scale(1.04);pointer-events:none}
+#cover .grain{position:absolute;inset:0;opacity:.07;background-image:radial-gradient(#fff 1px,transparent 1px);background-size:3px 3px;pointer-events:none}
+#cover svg.hero{width:min(82vw,360px);height:auto;filter:drop-shadow(0 20px 40px rgba(224,122,80,.25))}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);opacity:.9;margin-top:6px}
+.cover-title{font-family:var(--serif);font-size:clamp(54px,17vw,92px);line-height:.9;font-weight:700;letter-spacing:-.03em;margin:6px 0 2px;background:linear-gradient(180deg,#fff4e6 0%,#f0b48f 60%,#e07a50 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cover-title sup{font-size:.32em;vertical-align:top;position:relative;top:.35em;margin-left:.06em;color:var(--gold);-webkit-text-fill-color:var(--gold)}
+.cover-sub{max-width:360px;text-align:center;font-size:14.5px;color:#d9ccbb;margin:8px auto 4px}
+.cover-tag{font-family:var(--serif);font-style:italic;color:#f0b48f;font-size:17px;margin:6px 0 16px;text-align:center}
+.enter{appearance:none;border:1px solid rgba(240,180,143,.6);background:linear-gradient(180deg,rgba(224,122,80,.95),rgba(158,68,38,.95));color:#fff;padding:14px 30px;border-radius:999px;font-weight:600;letter-spacing:.04em;font-size:15px;box-shadow:0 10px 30px rgba(224,122,80,.35),inset 0 1px 0 rgba(255,255,255,.25);cursor:pointer}
+.enter:active{transform:scale(.97)}
+.sign{margin-top:18px;text-align:center;font-size:11.5px;color:#a99a89;line-height:1.45}
+.sign b{color:#e9dcc9;font-weight:600}
+@keyframes beat{0%,100%{transform:scale(1)}12%{transform:scale(1.045)}24%{transform:scale(.99)}36%{transform:scale(1.03)}}
+@keyframes glow{0%,100%{opacity:.35}50%{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes dash{to{stroke-dashoffset:0}}
+@keyframes fadeCross{0%,30%{opacity:1}55%,100%{opacity:0}}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.beat{transform-origin:200px 215px;animation:beat 1.6s ease-in-out infinite}
+.orbit{transform-origin:200px 205px;animation:spin 38s linear infinite}
+.orbit2{transform-origin:200px 205px;animation:spin 60s linear infinite reverse}
+.crux-fade{animation:fadeCross 4.8s ease-in-out infinite alternate}
+.gap-glow{animation:glow 2.4s ease-in-out infinite}
+.ecg{stroke-dasharray:640;stroke-dashoffset:640;animation:dash 2.6s ease-out .4s forwards}
+.r1{animation:rise .8s ease both}.r2{animation:rise .8s .15s ease both}.r3{animation:rise .8s .3s ease both}.r4{animation:rise .8s .45s ease both}.r5{animation:rise .8s .6s ease both}
+@media (prefers-reduced-motion: reduce){.beat,.orbit,.orbit2,.crux-fade,.gap-glow,.ecg,.r1,.r2,.r3,.r4,.r5{animation:none!important;stroke-dashoffset:0}}
+
+/* ---------- APP ---------- */
+header.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:calc(env(safe-area-inset-top) + 8px) 16px 8px;display:flex;align-items:center;gap:10px}
+header.top .logo{width:34px;height:34px;border-radius:10px;flex:none}
+header.top h1{font-size:19px;line-height:1.1}
+header.top small{display:block;font-family:var(--mono);font-size:10px;color:var(--mute);letter-spacing:.08em;text-transform:uppercase}
+header.top .sp{flex:1}
+.iconbtn{appearance:none;border:1px solid var(--line);background:var(--card);border-radius:10px;width:36px;height:36px;display:grid;place-items:center;cursor:pointer}
+main{max-width:760px;margin:0 auto;padding:14px 16px calc(96px + env(safe-area-inset-bottom))}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;background:color-mix(in srgb,var(--card) 94%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(7,1fr);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+nav.tabs button{appearance:none;border:0;background:none;padding:4px 0;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;color:var(--mute);cursor:pointer}
+nav.tabs button svg{width:22px;height:22px}
+nav.tabs button.on{color:var(--terra)}
+section.view{display:none;animation:rise .35s ease both}
+section.view.on{display:block}
+.h2{font-size:24px;margin:6px 0 4px}
+.lead{color:var(--mute);margin:0 0 12px;font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin:10px 0}
+.card h3{font-size:17px;margin-bottom:6px}
+.card p{margin:6px 0}
+.card ul{margin:6px 0;padding-left:18px}
+.card li{margin:3px 0}
+.pill{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:var(--terra-soft);color:var(--terra2)}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}.pill.warn{background:var(--warn-soft);color:var(--warn)}.pill.bad{background:var(--bad-soft);color:var(--bad)}.pill.info{background:var(--info-soft);color:var(--info)}
+.note{border-left:3px solid var(--terra);padding:8px 12px;background:var(--terra-soft);border-radius:0 10px 10px 0;margin:10px 0;font-size:14px}
+.note.ok{border-color:var(--ok);background:var(--ok-soft)}.note.warn{border-color:var(--warn);background:var(--warn-soft)}.note.bad{border-color:var(--bad);background:var(--bad-soft)}.note.info{border-color:var(--info);background:var(--info-soft)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:12.5px;color:var(--mute)}
+.field input,.field select{appearance:none;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:11px 12px;font:inherit;color:var(--ink);font-family:var(--mono);font-size:16px;width:100%}
+.field select{font-family:var(--sans);font-size:15px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px dashed var(--line)}
+.row:first-of-type{border-top:0}
+.row .lbl{font-size:14.5px}
+.row .lbl small{display:block;color:var(--mute);font-size:12px;line-height:1.35}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;flex:none}
+.seg button{appearance:none;border:0;background:var(--bg);padding:7px 10px;font-size:13px;cursor:pointer;min-width:40px}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button.on.si{background:var(--terra);color:#fff}
+.seg button.on.no{background:var(--ink);color:var(--bg)}
+.seg button.on.nd{background:var(--line)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{appearance:none;border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:7px 12px;font-size:13.5px;cursor:pointer}
+.chip.on{background:var(--terra);border-color:var(--terra);color:#fff}
+.groupT{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--terra);margin:16px 0 0}
+.btn{appearance:none;border:1px solid var(--terra);background:var(--terra);color:#fff;border-radius:12px;padding:12px 16px;font-weight:600;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--terra)}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.dx{border:1px solid var(--line);border-radius:14px;padding:12px;margin:10px 0;background:var(--card)}
+.dx.top{border-color:var(--terra);box-shadow:0 0 0 2px var(--terra-soft)}
+.dx .hd{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.dx .hd h3{font-size:16.5px}
+.bar{height:7px;border-radius:999px;background:var(--line);overflow:hidden;margin:8px 0}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--terra),var(--gold))}
+.ev{font-size:13.5px;margin:4px 0}
+.ev b{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.ev.pro b{color:var(--ok)}.ev.con b{color:var(--bad)}.ev.q b{color:var(--info)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:14px}
+.kv dt{color:var(--mute)}.kv dd{margin:0;font-family:var(--mono)}
+table.t{width:100%;border-collapse:collapse;font-size:13.5px}
+table.t th,table.t td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+table.t th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.big{font-family:var(--mono);font-size:26px;font-weight:600;color:var(--terra)}
+.dose{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px dashed var(--line);font-size:14px}
+.dose:first-child{border-top:0}
+.dose span:last-child{font-family:var(--mono);text-align:right}
+.refs li{font-size:13px;margin:6px 0;color:var(--ink)}
+.muted{color:var(--mute)}
+.foot{text-align:center;font-size:11.5px;color:var(--mute);margin:26px 0 8px}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 14px;border-radius:10px;font-size:13px;opacity:0;transition:.3s;pointer-events:none;z-index:60}
+.toast.on{opacity:1}
+details{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:8px 0;background:var(--card)}
+details summary{cursor:pointer;font-weight:600}
+@media (max-width:380px){nav.tabs button{font-size:9px}.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- ================= CARÁTULA ================= -->
+<div id="cover" role="dialog" aria-label="Carátula">
+  <div class="grain"></div>
+  <svg class="hero r1" viewBox="0 0 400 400" aria-hidden="true">
+    <defs>
+      <radialGradient id="gHeart" cx="45%" cy="35%" r="70%">
+        <stop offset="0" stop-color="#f6a27a"/><stop offset=".55" stop-color="#c0603a"/><stop offset="1" stop-color="#5a1f10"/>
+      </radialGradient>
+      <radialGradient id="gGap" cx="50%" cy="50%" r="50%">
+        <stop offset="0" stop-color="#fff6d8"/><stop offset=".45" stop-color="#d9a441" stop-opacity=".9"/><stop offset="1" stop-color="#d9a441" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="gChr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9dcc9"/><stop offset="1" stop-color="#8fa0bd"/></linearGradient>
+      <linearGradient id="gChr3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd9a8"/><stop offset="1" stop-color="#d9a441"/></linearGradient>
+    </defs>
+    <!-- órbitas -->
+    <g class="orbit" opacity=".55">
+      <circle cx="200" cy="205" r="168" fill="none" stroke="#f0b48f" stroke-width=".6" stroke-dasharray="2 7"/>
+      <circle cx="200" cy="37" r="3.2" fill="#d9a441"/>
+    </g>
+    <g class="orbit2" opacity=".4">
+      <ellipse cx="200" cy="205" rx="186" ry="150" fill="none" stroke="#8fa0bd" stroke-width=".5"/>
+      <circle cx="386" cy="205" r="2.4" fill="#e9dcc9"/>
+    </g>
+    <!-- trisomía: tres cromosomas 21 -->
+    <g transform="translate(150 18)">
+      <g><rect x="0" y="0" width="9" height="30" rx="4.5" fill="url(#gChr)"/><rect x="11" y="0" width="9" height="30" rx="4.5" fill="url(#gChr)"/><circle cx="10" cy="10" r="3.2" fill="#0d1420"/></g>
+      <g transform="translate(40 0)"><rect x="0" y="0" width="9" height="30" rx="4.5" fill="url(#gChr)"/><rect x="11" y="0" width="9" height="30" rx="4.5" fill="url(#gChr)"/><circle cx="10" cy="10" r="3.2" fill="#0d1420"/></g>
+      <g transform="translate(80 0)" class="gap-glow"><rect x="0" y="0" width="9" height="30" rx="4.5" fill="url(#gChr3)"/><rect x="11" y="0" width="9" height="30" rx="4.5" fill="url(#gChr3)"/><circle cx="10" cy="10" r="3.2" fill="#0d1420"/></g>
+    </g>
+    <!-- corazón -->
+    <g class="beat">
+      <path d="M200 340 C120 285 62 238 62 170 C62 125 96 92 138 92 C166 92 188 108 200 130 C212 108 234 92 262 92 C304 92 338 125 338 170 C338 238 280 285 200 340 Z" fill="url(#gHeart)" stroke="#ffd0b5" stroke-opacity=".35" stroke-width="1.5"/>
+      <!-- cámaras -->
+      <path d="M200 140 L200 300" stroke="#2b0e06" stroke-width="7" stroke-linecap="round" opacity=".55"/>
+      <path d="M92 196 L308 196" stroke="#2b0e06" stroke-width="6" stroke-linecap="round" opacity=".5"/>
+      <!-- crux cordis que se desvanece (DSAV) -->
+      <g class="crux-fade">
+        <path d="M200 168 L200 226" stroke="#fff1e6" stroke-width="8" stroke-linecap="round"/>
+        <path d="M170 196 L230 196" stroke="#fff1e6" stroke-width="8" stroke-linecap="round"/>
+      </g>
+      <circle cx="200" cy="196" r="34" fill="url(#gGap)" class="gap-glow"/>
+      <!-- válvula AV común: arco puente -->
+      <path d="M146 192 Q200 168 254 192" fill="none" stroke="#fff6d8" stroke-width="2.2" stroke-dasharray="4 4" opacity=".9"/>
+      <path d="M146 200 Q200 224 254 200" fill="none" stroke="#fff6d8" stroke-width="2.2" stroke-dasharray="4 4" opacity=".9"/>
+      <text x="112" y="160" fill="#fff1e6" opacity=".7" font-family="ui-monospace,Menlo,monospace" font-size="11">AD</text>
+      <text x="272" y="160" fill="#fff1e6" opacity=".7" font-family="ui-monospace,Menlo,monospace" font-size="11">AI</text>
+      <text x="126" y="252" fill="#fff1e6" opacity=".7" font-family="ui-monospace,Menlo,monospace" font-size="11">VD</text>
+      <text x="260" y="252" fill="#fff1e6" opacity=".7" font-family="ui-monospace,Menlo,monospace" font-size="11">VI</text>
+    </g>
+    <!-- ECG -->
+    <path class="ecg" d="M20 372 L120 372 L132 372 L140 362 L148 372 L160 372 L168 390 L176 336 L184 380 L196 372 L232 372 L244 364 L258 372 L380 372" fill="none" stroke="#d9a441" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity=".9"/>
+  </svg>
+  <div class="kicker r2">CDSS · Cardiología neonatal · Trisomía 21</div>
+  <div class="cover-title r2">CRUX<sup>21</sup></div>
+  <div class="cover-tag r3">Cuando al corazón le falta su cruz.</div>
+  <p class="cover-sub r3">Del examen físico a la ecocardiografía: diagnóstico de las cardiopatías del síndrome de Down y soporte con prostaglandina e inotrópicos según la fisiología.</p>
+  <button class="enter r4" id="enterBtn">Entrar</button>
+  <div class="sign r5"><b>Dr. Jano Jaramillo</b> — Médico Pediatra y Neonatólogo · Posgrado en Trastornos del Aprendizaje<br>Sala de Neonatología · Hospital Dr. Cecilio Castillero · Chitré, Panamá<br><span class="mono">v1.0 · noviembre 2026</span></div>
+</div>
+
+<!-- ================= APP ================= -->
+<header class="top">
+  <canvas class="logo" id="logoCv" width="68" height="68"></canvas>
+  <div><h1>CRUX 21</h1><small>Cardiopatías · Síndrome de Down</small></div>
+  <div class="sp"></div>
+  <button class="iconbtn" id="themeBtn" aria-label="Cambiar tema">◐</button>
+  <button class="iconbtn" id="coverBtn" aria-label="Ver carátula">✦</button>
+</header>
+
+<main>
+<!-- ===== REVISIÓN ===== -->
+<section class="view on" id="v-rev">
+  <h2 class="h2">Actualización del tema</h2>
+  <p class="lead">Lo esencial para la sala: qué buscar, cuándo y por qué el recién nacido con trisomía 21 no se comporta como cualquier otro cortocircuito.</p>
+
+  <div class="card">
+    <span class="pill">Epidemiología</span>
+    <h3 style="margin-top:8px">Cuatro de cada diez a la mitad</h3>
+    <ul>
+      <li>Las cardiopatías congénitas aparecen en el <b>40–50 %</b> de los niños con síndrome de Down (cohorte genómica multiétnica de 1 458 niños, Feldman 2025; 52,1 % en una serie de 1 731 pacientes, Uludağ Alkaya 2023).</li>
+      <li>La lesión dominante en la mayoría de las series es el <b>defecto septal auriculoventricular (DSAV)</b>, seguido de CIV, CIA ostium secundum y DAP. La tetralogía de Fallot, sola o con DSAV, es menos frecuente. Las obstrucciones izquierdas (coartación, hipoplasia de arco) son raras.</li>
+      <li>La distribución cambia entre poblaciones: hay series donde la CIV supera al DSAV. Que la prevalencia dependa de si se incluyen FOP y DAP pequeños obliga a definir bien qué se reporta.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <span class="pill bad">Regla de oro</span>
+    <h3 style="margin-top:8px">Ecocardiograma a todos, aunque el examen sea normal</h3>
+    <p>La AAP (Bull et al., <i>Pediatrics</i> 2022) recomienda ecocardiograma en todo recién nacido con síndrome de Down, <b>incluso si hubo ecocardiografía fetal</b>, interpretado por cardiología pediátrica.</p>
+    <div class="note warn">Un DSAV completo puede ser <b>silente los primeros días</b>: con RVP neonatal alta el cortocircuito es pequeño, no hay soplo y la saturación puede ser normal. El soplo y la insuficiencia cardíaca aparecen cuando la RVP cae (semanas 2–8). La ausencia de soplo no descarta nada.</div>
+    <p><b>Pista barata:</b> el eje QRS superior (−30° a −150°) en el ECG es muy sugestivo de DSAV.</p>
+  </div>
+
+  <div class="card">
+    <span class="pill info">Hipertensión pulmonar</span>
+    <h3 style="margin-top:8px">El pulmón del Down se adelanta</h3>
+    <ul>
+      <li>La HPPRN es más frecuente en neonatos con síndrome de Down que en la población general, con y sin cardiopatía (Cua 2007; Smith 2020).</li>
+      <li>Mecanismos superpuestos: hipoplasia/simplificación alveolar, disfunción endotelial y sobreexpresión de factores antiangiogénicos del cromosoma 21, actividad de interferón, obstrucción de vía aérea superior, reflujo, hipotiroidismo y el estrés hemodinámico del cortocircuito (Bush 2021; Bush & Ivy 2022).</li>
+      <li>La enfermedad vascular pulmonar por hiperflujo se instala <b>antes</b> que en niños sin trisomía: un DSAV no puede esperar el calendario habitual.</li>
+      <li>Comorbilidad de vía aérea (laringo/traqueomalacia, obstrucción) frecuente y subdiagnosticada; complica extubación y apneas con PGE1 (Craven 2025).</li>
+    </ul>
+    <div class="note info">En CIV o DSAV <b>no restrictivos</b> la presión del VD iguala a la del VI por el defecto: el jet tricuspídeo y el aplanamiento septal <b>no miden la RVP</b>. La pista es la <b>dirección del cortocircuito</b>: izquierda→derecha predominante implica RVP &lt; RVS; bidireccional o derecha→izquierda sugiere RVP alta.</div>
+  </div>
+
+  <div class="card">
+    <span class="pill ok">Cirugía</span>
+    <h3 style="margin-top:8px">Ventana del DSAV completo</h3>
+    <ul>
+      <li>Reparación habitual entre los <b>3 y 6 meses</b>; operar &gt; 6 meses se asoció a más reoperación y &lt; 3 meses a más insuficiencia valvular izquierda al alta (Xie 2014).</li>
+      <li>En la base STS (2 399 pacientes, 78 % con Down), la mediana fue 4,6 meses; peso &lt; 3,5 kg y edad ≤ 2,5 meses se asociaron a mayor mortalidad, y los pacientes con Down tuvieron <b>menos</b> mortalidad y morbilidad que los demás (St. Louis 2014).</li>
+      <li>El bandaje pulmonar hoy es infrecuente; se reserva para casos seleccionados.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <span class="pill warn">No es solo el corazón</span>
+    <h3 style="margin-top:8px">Lo que cambia el manejo hemodinámico</h3>
+    <ul>
+      <li><b>Mielopoyesis anormal transitoria (TAM):</b> blastos circulantes con mutación adquirida de <i>GATA1</i>; ~10 % (5–30 % según método). Hepatomegalia, derrames, hidrops, fibrosis hepática; ~20 % progresa a leucemia mieloide del Down. AAP 2022: <b>hemograma en todos</b>; frotis/derrame pericárdico deben hacer pensar en TAM.</li>
+      <li><b>Hipotiroidismo congénito</b> (2–7 %): TSH en todos. El hipotiroidismo deprime la función miocárdica y produce derrame pericárdico.</li>
+      <li><b>Trombocitopenia y policitemia</b>: frecuentes; revisar antes de procedimientos invasivos.</li>
+      <li><b>Atresia duodenal, Hirschsprung</b>, cataratas (reflejo rojo), audición, dificultad de alimentación y aspiración.</li>
+      <li><b>Hipotonía + PGE1</b>: mayor vulnerabilidad a apnea y a obstrucción de vía aérea.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Cómo usar CRUX 21</h3>
+    <p class="muted" style="margin:0">1 · <b>Clínica</b> → 2 · <b>Eco</b> → 3 · <b>Dx</b> (diferencial pluralista con evidencia a favor/en contra) → 4 · <b>Manejo</b> (PGE1 sí/no, inotrópico por fisiología) → 5 · <b>Dosis</b> (calculadora por peso). Funciona sin internet una vez abierta.</p>
+    <div class="btnrow"><button class="btn" data-go="clin">Comenzar</button></div>
+  </div>
+</section>
+
+<!-- ===== CLÍNICA ===== -->
+<section class="view" id="v-clin">
+  <h2 class="h2">Hallazgos clínicos</h2>
+  <p class="lead">Lo que dice el niño antes del transductor. Deja en "?" lo que no tengas.</p>
+  <div class="card"><div class="grid2" id="clinNums"></div></div>
+  <div class="card"><h3>Soplo</h3><div class="chips" id="soploChips"></div></div>
+  <div class="card"><h3>ECG · eje QRS</h3><div class="chips" id="ejeChips"></div></div>
+  <div class="card"><h3>Radiografía de tórax</h3><div class="chips" id="rxChips"></div></div>
+  <div class="card" id="clinTri"></div>
+  <div class="btnrow"><button class="btn" data-go="eco">Seguir a ecocardiografía →</button></div>
+</section>
+
+<!-- ===== ECO ===== -->
+<section class="view" id="v-eco">
+  <h2 class="h2">Ecocardiografía</h2>
+  <p class="lead">Recorrido por planos. El orden importa: primero la cruz del corazón.</p>
+  <div id="ecoBody"></div>
+  <div class="btnrow"><button class="btn" data-go="dx">Ver diagnóstico →</button><button class="btn ghost" id="resetBtn">Borrar todo</button></div>
+</section>
+
+<!-- ===== DX ===== -->
+<section class="view" id="v-dx">
+  <h2 class="h2">Diagnóstico diferencial</h2>
+  <p class="lead">Cada hipótesis con lo que la sostiene, lo que la contradice y la pregunta que la decide. No es un veredicto: es un mapa.</p>
+  <div id="dxSummary"></div>
+  <div id="dxList"></div>
+  <div class="btnrow"><button class="btn" data-go="man">Ir al manejo →</button><button class="btn ghost" id="copyBtn">Copiar resumen</button></div>
+</section>
+
+<!-- ===== MANEJO ===== -->
+<section class="view" id="v-man">
+  <h2 class="h2">Manejo por fisiología</h2>
+  <p class="lead">La cardiopatía se nombra por su anatomía, pero se trata por su fisiología.</p>
+  <div class="card"><h3>Fisiología a manejar</h3><div class="chips" id="physChips"></div><p class="muted" id="physAuto" style="font-size:13px;margin-top:8px"></p></div>
+  <div id="pgeCard"></div>
+  <div id="manBody"></div>
+</section>
+
+<!-- ===== DOSIS ===== -->
+<section class="view" id="v-dos">
+  <h2 class="h2">Calculadora de dosis</h2>
+  <p class="lead">Infusiones en mL/h según peso, dosis y concentración. Verifica siempre con farmacia y el protocolo local.</p>
+  <div class="card">
+    <div class="grid2">
+      <div class="field"><label>Peso (kg)</label><input id="dWt" type="number" inputmode="decimal" step="0.01" min="0.4" max="8"></div>
+      <div class="field"><label>Fármaco</label><select id="dDrug"></select></div>
+      <div class="field"><label id="dDoseLbl">Dosis</label><input id="dDose" type="number" inputmode="decimal" step="any"></div>
+      <div class="field"><label>Concentración</label><select id="dConc"></select></div>
+    </div>
+    <div id="dOut" style="margin-top:12px"></div>
+  </div>
+  <div class="card"><h3>Bolos y dosis intermitentes</h3><div id="bolus"></div></div>
+</section>
+
+<!-- ===== REFERENCIAS ===== -->
+<section class="view" id="v-ref">
+  <h2 class="h2">Evidencia</h2>
+  <p class="lead">Fuentes que sostienen el contenido. Revisión: noviembre 2026.</p>
+  <div class="card"><ol class="refs">
+    <li>Bull MJ, Trotter T, Santoro SL, et al. Health Supervision for Children and Adolescents With Down Syndrome. <i>Pediatrics</i> 2022;149(5):e2022057010.</li>
+    <li>Feldman ER, Li Y, Cutler DJ, Rosser TC, et al. Genome-wide association studies of Down syndrome–associated congenital heart defects suggest a genetically heterogeneous risk for CHD in DS. <i>Genet Epidemiol</i> 2025. doi:10.1002/gepi.70010.</li>
+    <li>Uludağ Alkaya D, Öztürk B, et al. Congenital heart defects and outcome in a large cohort of Down syndrome: a single-center experience from Turkey. <i>Turk Arch Pediatr</i> 2023;58(5):473-479.</li>
+    <li>Smith AM, Levy PT, Franklin O, Molloy E, El-Khuffash A. Pulmonary hypertension and myocardial function in infants and children with Down syndrome. <i>Arch Dis Child</i> 2020;105(11):1031-1034.</li>
+    <li>Bush D, Galambos C, Ivy DD. Pulmonary hypertension in children with Down syndrome. <i>Pediatr Pulmonol</i> 2021;56(3):621-629.</li>
+    <li>Bush DS, Ivy DD. Pulmonary hypertension in the population with Down syndrome. <i>Cardiol Ther</i> 2022;11:33-47.</li>
+    <li>Cua CL, Blankenship A, North AL, Hayes J, Nelin LD. Increased incidence of idiopathic persistent pulmonary hypertension in Down syndrome neonates. <i>Pediatr Cardiol</i> 2007;28:250-254.</li>
+    <li>Hawkins A, Langton-Hewer S, Henderson J, Tulloh RM. Management of pulmonary hypertension in Down syndrome. <i>Eur J Pediatr</i> 2011;170(7):915-921.</li>
+    <li>Craven VE, Daw WJ, Wan JWY, Elphick HE. Respiratory and airway disorders in children with Down syndrome: a review of the clinical challenges and management. <i>Front Pediatr</i> 2025;13:1553984.</li>
+    <li>St. Louis JD, Jodhka U, Jacobs JP, et al. Contemporary outcomes of complete atrioventricular septal defect repair: STS Congenital Heart Surgery Database. <i>J Thorac Cardiovasc Surg</i> 2014;148(6):2526-2531.</li>
+    <li>Xie O, Brizard CP, d'Udekem Y, et al. Outcomes of repair of complete atrioventricular septal defect in the current era. <i>Eur J Cardiothorac Surg</i> 2014;45(4):610-617.</li>
+    <li>WHO Classification of Tumours Editorial Board. Haematolymphoid Tumours, 5th ed. Lyon: IARC; 2024 (Myeloid proliferations associated with Down syndrome).</li>
+    <li>Abman SH, Hansmann G, Archer SL, et al. Pediatric Pulmonary Hypertension: AHA/ATS Guidelines. <i>Circulation</i> 2015;132:2037-2099.</li>
+    <li>Giesinger RE, More K, Odame J, et al. Controversies in the identification and management of acute pulmonary hypertension in preterm neonates. <i>Pediatr Res</i> 2017;82:901-914.</li>
+    <li>Lakshminrusimha S, Keszler M. Persistent pulmonary hypertension of the newborn. <i>NeoReviews</i> 2015;16:e680-e692.</li>
+  </ol></div>
+  <div class="note warn">Herramienta de apoyo a la decisión. No sustituye la valoración por cardiología pediátrica ni el juicio clínico; las dosis deben verificarse con el protocolo institucional.</div>
+  <div class="foot">Dr. Jano Jaramillo — Médico Pediatra y Neonatólogo · Posgrado en Trastornos del Aprendizaje<br>Sala de Neonatología · Hospital Dr. Cecilio Castillero · Chitré, Panamá</div>
+</section>
+</main>
+
+<nav class="tabs" id="tabs">
+  <button data-go="rev" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h11a4 4 0 0 1 4 4v10H8a4 4 0 0 1-4-4z"/><path d="M8 9h7M8 13h5"/></svg>Tema</button>
+  <button data-go="clin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3v6a4 4 0 0 0 8 0V3"/><path d="M10 13v3a5 5 0 0 0 10 0v-2"/><circle cx="20" cy="12" r="2"/></svg>Clínica</button>
+  <button data-go="eco"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21 4 7a9 9 0 0 1 16 0z"/><path d="M12 21V11"/></svg>Eco</button>
+  <button data-go="dx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/><path d="M12 9v5M9.5 11.5h5"/></svg>Dx</button>
+  <button data-go="man"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h4l2-5 4 10 2-5h6"/></svg>Manejo</button>
+  <button data-go="dos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M7 8h10M10 12h4M10 16h4"/></svg>Dosis</button>
+  <button data-go="ref"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h10l4 4v12H5z"/><path d="M15 4v4h4"/></svg>Refs</button>
+</nav>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+/* ================== ESTADO ================== */
+const KEY = "crux21_v1";
+let S = { c:{}, e:{}, phys:null };
+try { const raw = localStorage.getItem(KEY); if (raw) S = Object.assign(S, JSON.parse(raw)); } catch(_) {}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(_) {} }
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const num = v => (v===undefined||v===null||v==="") ? null : (isFinite(+v) ? +v : null);
+const fmt = (x,d=2) => (x===null||!isFinite(x)) ? "—" : (+x).toLocaleString("es-PA",{maximumFractionDigits:d,minimumFractionDigits:0});
+function toast(m){ const t=$("#toast"); t.textContent=m; t.classList.add("on"); setTimeout(()=>t.classList.remove("on"),1800); }
+
+/* ================== CARÁTULA / NAV ================== */
+function hideCover(){ $("#cover").classList.add("gone"); try{ sessionStorage.setItem("crux21_seen","1"); }catch(_){} }
+$("#enterBtn").onclick = hideCover;
+$("#coverBtn").onclick = () => $("#cover").classList.remove("gone");
+try { if (sessionStorage.getItem("crux21_seen")) $("#cover").classList.add("gone"); } catch(_){}
+function go(v){
+  $$("section.view").forEach(s=>s.classList.toggle("on", s.id==="v-"+v));
+  $$("#tabs button").forEach(b=>b.classList.toggle("on", b.dataset.go===v));
+  if (v==="dx") renderDx();
+  if (v==="man") renderMan();
+  if (v==="dos") renderDose();
+  window.scrollTo({top:0,behavior:"instant"});
+}
+document.addEventListener("click", e => { const b = e.target.closest("[data-go]"); if (b) go(b.dataset.go); });
+$("#themeBtn").onclick = () => {
+  const r = document.documentElement, cur = r.getAttribute("data-theme");
+  const dark = cur ? cur==="dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  r.setAttribute("data-theme", dark ? "light" : "dark");
+  try{ localStorage.setItem("crux21_theme", r.getAttribute("data-theme")); }catch(_){}
+};
+try{ const th = localStorage.getItem("crux21_theme"); if (th) document.documentElement.setAttribute("data-theme", th); }catch(_){}
+
+/* ================== UI HELPERS ================== */
+function triRow(store, k, label, hint){
+  const v = S[store][k] || "nd";
+  return `<div class="row"><div class="lbl">${label}${hint?`<small>${hint}</small>`:""}</div>
+  <div class="seg" data-store="${store}" data-k="${k}">
+    <button class="si ${v==="si"?"on":""}" data-v="si">Sí</button><button class="no ${v==="no"?"on":""}" data-v="no">No</button><button class="nd ${v==="nd"?"on":""}" data-v="nd">?</button>
+  </div></div>`;
+}
+function chipSet(el, store, k, opts){
+  const v = S[store][k] || "nd";
+  el.innerHTML = opts.map(o=>`<button class="chip ${v===o[0]?"on":""}" data-store="${store}" data-k="${k}" data-v="${o[0]}">${o[1]}</button>`).join("");
+}
+function numField(store, k, label, unit, step){
+  const v = S[store][k] ?? "";
+  return `<div class="field"><label>${label}${unit?` (${unit})`:""}</label><input type="number" inputmode="decimal" step="${step||"any"}" data-store="${store}" data-k="${k}" value="${v}"></div>`;
+}
+document.addEventListener("click", e=>{
+  const b = e.target.closest(".seg button, .chip[data-store]");
+  if (!b) return;
+  const wrap = b.closest(".seg") || b;
+  const store = wrap.dataset.store, k = wrap.dataset.k, v = b.dataset.v;
+  if (!store) return;
+  S[store][k] = v; save();
+  if (b.classList.contains("chip")) { b.parentElement.querySelectorAll(".chip").forEach(c=>c.classList.toggle("on", c===b)); }
+  else { wrap.querySelectorAll("button").forEach(x=>x.classList.toggle("on", x===b)); }
+});
+document.addEventListener("input", e=>{
+  const i = e.target; if (!i.dataset || !i.dataset.store) return;
+  S[i.dataset.store][i.dataset.k] = i.value; save();
+  if (i.dataset.k==="peso") { const w=$("#dWt"); if (w && !w.matches(":focus")) w.value=i.value; }
+});
+
+/* ================== CLÍNICA ================== */
+function renderClin(){
+  $("#clinNums").innerHTML =
+    numField("c","hol","Horas de vida","h",1) + numField("c","peso","Peso","kg",0.01) +
+    numField("c","eg","Edad gestacional","sem",0.1) + numField("c","pas","PA sistólica","mmHg",1) +
+    numField("c","spo2pre","SpO₂ preductal (MSD)","%",1) + numField("c","spo2post","SpO₂ posductal (MI)","%",1);
+  chipSet($("#soploChips"),"c","soplo",[["none","Sin soplo"],["hsys","Holosistólico BEI"],["eject","Eyectivo BSI"],["cont","Continuo infraclavicular"],["apical","Regurgitante apical"],["nd","?"]]);
+  chipSet($("#ejeChips"),"c","eje",[["sup","Superior (−30° a −150°)"],["der","Derecho / HVD"],["norm","Normal neonatal"],["nd","?"]]);
+  chipSet($("#rxChips"),"c","rx",[["pleto","Cardiomegalia + plétora"],["oligo","Oligohemia"],["norm","Normal"],["nd","?"]]);
+  $("#clinTri").innerHTML = `<h3>Examen físico</h3>` + [
+    ["cianosis","Cianosis central / SpO₂ &lt; 95 % sostenida",""],
+    ["s2","S2 único o fuerte","Componente pulmonar acentuado → HP"],
+    ["precordio","Precordio hiperdinámico",""],
+    ["taquipnea","Taquipnea / tiraje",""],
+    ["hepato","Hepatomegalia",""],
+    ["succion","Fatiga o sudoración con la toma",""],
+    ["pulsos","Pulsos femorales débiles o ausentes",""],
+    ["gradiente","Gradiente PA brazo–pierna ≥ 10 mmHg",""],
+    ["crisis","Crisis de hipoxemia (irritabilidad, cianosis súbita)",""],
+    ["shock","Hipoperfusión / acidosis láctica",""],
+    ["hidrops","Derrames / hidrops / ascitis",""],
+    ["tam","Hepatoesplenomegalia, petequias o blastos en frotis","Sospecha de TAM"],
+    ["tsh","TSH elevada / hipotiroidismo",""]
+  ].map(r=>triRow("c",r[0],r[1],r[2])).join("");
+}
+
+/* ================== ECO ================== */
+const ECO = [
+  {t:"Subcostal · septo interauricular", items:[
+    ["tri","ciaos","CIA ostium secundum (&gt; 4 mm)","Defecto en fosa oval"],
+    ["tri","fop","Solo FOP (≤ 4 mm)",""],
+    ["chips","iadir","Dirección del flujo interauricular",[["id","Izq → der"],["bid","Bidireccional"],["di","Der → izq"],["nd","?"]]]
+  ]},
+  {t:"Apical 4 cámaras · la cruz del corazón", items:[
+    ["tri","offset","Pérdida del offset AV","Ambas válvulas insertan al mismo nivel (normal: tricúspide más apical)"],
+    ["tri","valvcomun","Orificio / válvula AV común","Una sola unión AV que cruza el septo"],
+    ["tri","ciaprimum","CIA ostium primum","Defecto bajo, contiguo a las válvulas AV"],
+    ["tri","civentrada","CIV de entrada (bajo las valvas puente)",""],
+    ["tri","cleft","Hendidura (cleft) de la válvula AV izquierda",""],
+    ["chips","balance","Balance ventricular",[["bal","Balanceado"],["vd","VD dominante (VI pequeño)"],["vi","VI dominante (VD pequeño)"],["nd","?"]]],
+    ["chips","rastelli","Rastelli (valva puente superior)",[["A","A · al septo"],["B","B · músculo papilar VD"],["C","C · flotante"],["nd","?"]]],
+    ["chips","iav","Insuficiencia de válvula AV",[["0","Ausente/leve"],["mod","Moderada"],["sev","Grave"],["nd","?"]]]
+  ]},
+  {t:"Paraesternal largo y corto · septo ventricular y tractos", items:[
+    ["tri","civpm","CIV perimembranosa",""],
+    ["tri","civmusc","CIV muscular",""],
+    ["chips","civdir","Dirección del cortocircuito ventricular",[["id","Izq → der"],["bid","Bidireccional"],["di","Der → izq"],["nd","?"]]],
+    ["tri","cabalg","Cabalgamiento aórtico (&gt; 50 % no; ~ 50 % sí)","Aorta sobre una CIV de malalineamiento"],
+    ["tri","obst","Obstrucción del TSVD","Desviación anterior del septo infundibular / estenosis valvular"],
+    ["chips","flujoant","Flujo anterógrado pulmonar",[["ok","Adecuado"],["escaso","Escaso"],["aus","Ausente (atresia)"],["nd","?"]]]
+  ]},
+  {t:"Ductus arterioso", items:[
+    ["tri","dap","Ductus permeable",""],
+    ["num","dapmm","Diámetro ductal mínimo","mm"],
+    ["chips","dapdir","Dirección ductal",[["id","Ao → AP (izq-der)"],["bid","Bidireccional"],["di","AP → Ao (der-izq)"],["nd","?"]]]
+  ]},
+  {t:"Supraesternal · arco aórtico", items:[
+    ["tri","arcohipo","Hipoplasia de arco transverso / istmo",""],
+    ["tri","coa","Coartación (escalón, aceleración, cola diastólica)",""],
+    ["tri","flujodiast","Aorta abdominal: flujo amortiguado con cola diastólica anterógrada",""]
+  ]},
+  {t:"Presiones pulmonares y función", items:[
+    ["num","trvel","Velocidad pico de IT","m/s"],
+    ["chips","septo","Septo interventricular en sístole",[["norm","Redondo"],["plano","Aplanado"],["abomb","Abombado hacia VI"],["nd","?"]]],
+    ["num","tapse","TAPSE","mm"],
+    ["tri","vddisf","Disfunción del VD (visual / FAC baja)",""],
+    ["tri","vidisf","Disfunción del VI",""],
+    ["tri","derrame","Derrame pericárdico",""]
+  ]}
+];
+function renderEco(){
+  $("#ecoBody").innerHTML = ECO.map((g,gi)=>`<div class="card"><div class="groupT">${g.t}</div>` + g.items.map((it,ii)=>{
+    if (it[0]==="tri") return triRow("e",it[1],it[2],it[3]);
+    if (it[0]==="num") return `<div class="row"><div class="lbl">${it[2]}</div><div style="width:120px">${`<input class="mono" style="width:100%;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:9px;font-size:16px;color:var(--ink)" type="number" inputmode="decimal" step="any" data-store="e" data-k="${it[1]}" value="${S.e[it[1]]??""}" placeholder="${it[3]}">`}</div></div>`;
+    return `<div class="row" style="flex-direction:column;align-items:flex-start"><div class="lbl">${it[2]}</div><div class="chips" id="ec-${gi}-${ii}"></div></div>`;
+  }).join("") + `</div>`).join("");
+  ECO.forEach((g,gi)=>g.items.forEach((it,ii)=>{ if (it[0]==="chips") chipSet($(`#ec-${gi}-${ii}`),"e",it[1],it[3]); }));
+}
+$("#resetBtn").onclick = ()=>{ if (!confirm("¿Borrar todos los datos del paciente?")) return; S={c:{},e:{},phys:null}; save(); renderClin(); renderEco(); toast("Datos borrados"); };
+
+/* ================== MOTOR DIAGNÓSTICO ================== */
+const E = k => S.e[k]==="si", En = k => S.e[k]==="no", Ev = (k,v) => S.e[k]===v;
+const C = k => S.c[k]==="si", Cv = (k,v) => S.c[k]===v;
+function derived(){
+  const pre=num(S.c.spo2pre), post=num(S.c.spo2post), pas=num(S.c.pas), tr=num(S.e.trvel);
+  const dif = (pre!==null && post!==null) ? pre-post : null;
+  const psap = tr!==null ? 4*tr*tr+5 : null;
+  const ratio = (psap!==null && pas) ? psap/pas : null;
+  const bigShunt = E("valvcomun") || E("civentrada");
+  // Grado de HP (0 sin datos,1 leve,2 ~sistémica,3 suprasistémica)
+  let g=0, why=[];
+  if (!bigShunt){
+    if (ratio!==null){ const r = ratio<0.5?0: ratio<0.67?1: ratio<=1?2:3; if (r>g) g=r; why.push(`PSAP ≈ ${fmt(psap,0)} mmHg (${fmt(ratio*100,0)} % de la sistémica)`); }
+    if (Ev("septo","plano")) { g=Math.max(g,2); why.push("Septo aplanado"); }
+    if (Ev("septo","abomb")) { g=Math.max(g,3); why.push("Septo abombado hacia VI"); }
+  }
+  const dirs=[S.e.dapdir,S.e.civdir,S.e.iadir];
+  if (dirs.includes("di")) { g=Math.max(g,3); why.push("Cortocircuito der→izq"); }
+  else if (dirs.includes("bid")) { g=Math.max(g,2); why.push("Cortocircuito bidireccional"); }
+  if (dif!==null && dif>=3) { g=Math.max(g,2); why.push(`Diferencia pre-posductal ${fmt(dif,0)} %`); }
+  if (bigShunt && ratio!==null) why.push("En defecto no restrictivo la PSAP iguala la sistémica: se interpreta por la dirección del cortocircuito");
+  return {pre,post,pas,tr,dif,psap,ratio,hp:g,hpWhy:why,bigShunt};
+}
+const anyLesion = () => E("valvcomun")||E("ciaprimum")||E("civentrada")||E("civpm")||E("civmusc")||E("ciaos")||E("cabalg")||E("obst")||Ev("flujoant","aus")||E("coa")||E("arcohipo")||(E("dap") && num(S.e.dapmm)>=2);
+function DX(){
+  const d = derived(); const hol=num(S.c.hol); const dapmm=num(S.e.dapmm);
+  const L = [
+  { id:"cavsd", name:"DSAV completo balanceado", phys:"shunt",
+    r:[[E("offset"),3,"Pérdida del offset AV"],[E("valvcomun"),4,"Orificio AV común"],[E("ciaprimum"),2,"CIA ostium primum"],[E("civentrada"),3,"CIV de entrada"],
+       [Ev("balance","bal"),1,"Ventrículos balanceados"],[Cv("eje","sup"),2,"Eje QRS superior"],[Ev("rastelli","A")||Ev("rastelli","B"),1,"Clasificable como Rastelli "+(S.e.rastelli||"")],
+       [C("hepato")||C("taquipnea")||C("succion"),0.5,"Signos de sobrecirculación"],[Cv("soplo","none") && hol!==null && hol<72,0.5,"Sin soplo en primeras 72 h: típico con RVP aún alta"],
+       [En("valvcomun"),-3,"Dos orificios AV separados"],[En("offset"),-4,"Offset AV conservado"],[Ev("balance","vd")||Ev("balance","vi"),-2,"Hay desbalance ventricular"],[E("cabalg")&&E("obst"),-2,"Fisiología de Fallot asociada"]],
+    q:"En apical 4C con barrido anterior–posterior: ¿existe un solo anillo AV y componente ventricular bajo las valvas puente?" },
+  { id:"ucavsd", name:"DSAV desbalanceado", phys:"sist",
+    r:[[E("valvcomun"),3,"Orificio AV común"],[E("offset"),2,"Pérdida del offset"],[Ev("balance","vd"),4,"VD dominante: VI hipoplásico"],[Ev("balance","vi"),3,"VI dominante: VD hipoplásico"],
+       [E("arcohipo")||E("coa"),2,"Obstrucción del arco asociada"],[Ev("dapdir","di")||Ev("dapdir","bid"),1,"Ductus con flujo hacia aorta"],
+       [Ev("balance","bal"),-4,"Ventrículos balanceados"],[En("valvcomun"),-3,"Sin válvula AV común"]],
+    q:"¿Puede el ventrículo pequeño sostener su circulación? Medir índice de valva AV (área izquierda / total; &lt; 0,4 sugiere VI insuficiente) y revisar arco." },
+  { id:"pavsd", name:"DSAV parcial / transicional", phys:"shunt",
+    r:[[E("ciaprimum"),4,"CIA ostium primum"],[E("offset"),3,"Pérdida del offset"],[En("valvcomun"),2,"Dos orificios AV"],[E("cleft"),2,"Cleft de válvula AV izquierda"],
+       [En("civentrada"),2,"Sin componente ventricular (parcial)"],[Cv("eje","sup"),2,"Eje QRS superior"],[Cv("soplo","apical"),1,"Soplo regurgitante apical"],
+       [E("valvcomun"),-3,"Hay orificio AV común"],[En("ciaprimum"),-4,"Sin CIA primum"]],
+    q:"¿Hay CIV de entrada? Si existe pero es pequeña y restrictiva = forma transicional." },
+  { id:"civ", name:"CIV aislada (perimembranosa / muscular)", phys:"shunt",
+    r:[[E("civpm"),5,"CIV perimembranosa"],[E("civmusc"),3,"CIV muscular"],[En("offset"),1,"Offset AV normal"],[Cv("soplo","hsys"),2,"Soplo holosistólico BEI"],[En("ciaprimum"),1,"Sin CIA primum"],
+       [E("valvcomun"),-4,"Válvula AV común"],[E("cabalg")&&E("obst"),-3,"Cabalgamiento con obstrucción del TSVD"]],
+    q:"Gradiente transdefecto por Doppler: &gt; 4 m/s = restrictiva; baja velocidad = no restrictiva (presiones igualadas)." },
+  { id:"ciaos", name:"CIA ostium secundum", phys:"shunt",
+    r:[[E("ciaos"),5,"Defecto en fosa oval &gt; 4 mm"],[En("offset"),1,"Offset normal"],[En("civpm")&&En("civentrada"),1,"Septo ventricular íntegro"],[E("ciaprimum"),-3,"Hay CIA primum (pertenece al DSAV)"],[E("fop"),-2,"Solo FOP"]],
+    q:"En subcostal: ¿bordes del defecto y relación con las válvulas AV? Recordar que puede producir HP precoz en Down." },
+  { id:"dap", name:"DAP hemodinámicamente relevante", phys:"shunt",
+    r:[[E("dap"),3,"Ductus permeable"],[dapmm!==null&&dapmm>=2,2,`Diámetro ductal ${fmt(dapmm,1)} mm`],[Cv("soplo","cont"),2,"Soplo continuo"],[hol!==null&&hol>72,1,"Persistente después de 72 h"],
+       [hol!==null&&hol<48,-1,"Primeras 48 h: puede ser transicional"],[En("dap"),-5,"Ductus cerrado"]],
+    q:"¿Dirección ductal? Si es der→izq o bidireccional, el ductus es una válvula de escape de la HP y no debe cerrarse." },
+  { id:"tof", name:"Tetralogía de Fallot", phys:"tof",
+    r:[[E("cabalg"),4,"Cabalgamiento aórtico"],[E("obst"),4,"Obstrucción del TSVD"],[E("civpm"),1,"CIV de malalineamiento"],[Cv("soplo","eject"),2,"Soplo eyectivo BSI"],[C("cianosis"),1,"Cianosis"],[Cv("rx","oligo"),1,"Oligohemia"],[C("crisis"),2,"Crisis de hipoxemia"],
+       [En("cabalg"),-3,"Sin cabalgamiento"],[En("obst"),-2,"Sin obstrucción del TSVD"],[Ev("flujoant","aus"),-2,"Sin flujo anterógrado (→ atresia pulmonar)"],[E("valvcomun"),-1,"Válvula AV común (→ Fallot con DSAV)"]],
+    q:"¿Cuánto flujo pulmonar anterógrado hay? Si es escaso con SpO₂ &lt; 75 % o depende del ductus, requiere PGE1." },
+  { id:"tofavsd", name:"Fallot con DSAV", phys:"tof",
+    r:[[E("cabalg"),3,"Cabalgamiento aórtico"],[E("obst"),3,"Obstrucción del TSVD"],[E("valvcomun"),4,"Válvula AV común"],[Ev("rastelli","C"),3,"Rastelli C (asociación típica)"],[Cv("eje","sup"),1,"Eje superior"],
+       [En("valvcomun"),-4,"Sin válvula AV común"],[En("cabalg"),-3,"Sin cabalgamiento"]],
+    q:"¿Predomina la obstrucción pulmonar (cianosis) o el cortocircuito (sobrecirculación)? Define si se maneja como Fallot o como DSAV." },
+  { id:"apciv", name:"Atresia pulmonar con CIV", phys:"pulm",
+    r:[[Ev("flujoant","aus"),6,"Sin flujo anterógrado pulmonar"],[E("cabalg"),2,"Cabalgamiento aórtico"],[Ev("dapdir","id"),2,"Ductus Ao → AP alimenta pulmones"],[C("cianosis"),2,"Cianosis"],
+       [Ev("flujoant","ok"),-5,"Flujo anterógrado adecuado"],[Ev("flujoant","escaso"),-1,"Flujo escaso pero presente"]],
+    q:"Buscar colaterales aortopulmonares mayores (MAPCA). El ductus suele ser la fuente de flujo pulmonar: no dejarlo cerrar." },
+  { id:"coa", name:"Coartación / hipoplasia del arco", phys:"sist",
+    r:[[E("coa"),5,"Coartación en supraesternal"],[E("arcohipo"),3,"Arco hipoplásico"],[C("pulsos"),3,"Pulsos femorales débiles"],[C("gradiente"),3,"Gradiente brazo–pierna"],[E("flujodiast"),2,"Flujo abdominal amortiguado con cola diastólica"],
+       [Ev("dapdir","di")&&d.dif!==null&&d.dif>=3,1,"Cianosis diferencial con ductus der→izq"],[C("shock"),1,"Shock al cierre ductal"],
+       [En("coa")&&En("arcohipo"),-4,"Arco normal"]],
+    q:"Con ductus abierto la coartación puede no verse: repetir la evaluación del istmo y del Doppler abdominal al cerrar el ductus." },
+  { id:"hp", name:"Hipertensión pulmonar (HPPRN) sin lesión que la explique", phys:"hp",
+    r:[[d.hp>=2,3,"Presión pulmonar ≥ ~sistémica"],[d.hp===3,1,"Suprasistémica"],[d.dif!==null&&d.dif>=3,2,"Diferencia pre-posductal ≥ 3 %"],[Ev("dapdir","bid")||Ev("dapdir","di"),2,"Ductus bidireccional / der→izq"],
+       [!anyLesion(),2,"Sin lesión estructural significativa"],[C("s2"),1,"S2 fuerte"],[E("vddisf"),1,"Disfunción del VD"],
+       [anyLesion(),-1,"Hay cardiopatía estructural: la HP puede ser asociada (ver modificador)"],[d.hp===0&&d.tr!==null,-2,"Presiones estimadas bajas"]],
+    q:"¿La HP es desproporcionada a la lesión? En Down considerar hipoplasia pulmonar, vía aérea, hipotiroidismo y policitemia." },
+  { id:"peri", name:"Derrame pericárdico / TAM / hipotiroidismo", phys:"peri",
+    r:[[E("derrame"),4,"Derrame pericárdico"],[C("tam"),3,"Hepatoesplenomegalia / petequias / blastos"],[C("hidrops"),2,"Derrames o hidrops"],[C("tsh"),2,"TSH elevada"],[En("derrame"),-3,"Sin derrame"]],
+    q:"¿Hay compromiso del llenado (colapso de AD/VD, variación respiratoria)? Hemograma con frotis y TSH/T4L." },
+  { id:"normal", name:"Corazón estructuralmente normal (FOP / ductus transicional)", phys:"none",
+    r:[[!anyLesion() && (En("offset")||En("valvcomun")) && (En("civpm")||En("civentrada")),4,"Sin defectos relevantes en los planos evaluados"],[E("fop")&&!E("ciaos"),1,"Solo FOP"],[d.hp<=1,1,"Sin HP significativa"],
+       [anyLesion(),-5,"Hay lesión estructural"],[d.hp>=2,-2,"HP significativa"]],
+    q:"¿Se completaron los planos? Un DSAV parcial o una CIV de entrada pequeña se pierden si no se barre el septo AV." }
+  ];
+  L.forEach(x=>{ x.pro=[]; x.con=[]; x.s=0; x.r.forEach(([c,w,t])=>{ if(c){ x.s+=w; (w>0?x.pro:x.con).push(t); } }); });
+  L.sort((a,b)=>b.s-a.s);
+  return {list:L, d};
+}
+const PH_TXT = ["Sin datos / no significativa","Leve","~Sistémica","Suprasistémica"];
+function renderDx(){
+  const {list,d} = DX();
+  const max = Math.max(1, ...list.map(x=>x.s));
+  const shown = list.filter(x=>x.s>0);
+  const evidence = list.reduce((a,x)=>a+x.pro.length,0);
+  let sum = `<div class="card"><h3>Lectura integrada</h3><dl class="kv">
+    <dt>Presión pulmonar</dt><dd>${PH_TXT[d.hp]}</dd>
+    <dt>SpO₂ pre / post</dt><dd>${fmt(d.pre,0)} / ${fmt(d.post,0)} %</dd>
+    ${d.psap!==null?`<dt>PSAP (4v²+5)</dt><dd>${fmt(d.psap,0)} mmHg</dd>`:""}
+  </dl>${d.hpWhy.length?`<p class="muted" style="font-size:13px;margin-top:8px">${d.hpWhy.join(" · ")}</p>`:""}`;
+  if (num(S.c.hol)!==null && num(S.c.hol)<48 && d.hp>=2) sum += `<div class="note info">Primeras 48 h: la RVP aún desciende. Repetir la eco a las 24–72 h antes de rotular HP persistente, salvo hipoxemia o disfunción del VD.</div>`;
+  if (evidence<3) sum += `<div class="note warn">Hay pocos datos: completa los planos de la eco para que el diferencial sea útil.</div>`;
+  sum += `</div>`;
+  $("#dxSummary").innerHTML = sum;
+  if (!shown.length){ $("#dxList").innerHTML = `<div class="card muted">Sin hipótesis aún. Registra hallazgos en Clínica y Eco.</div>`; return; }
+  const top = shown[0];
+  // Pluralismo: mostrar también hipótesis no descartadas aunque bajas
+  const rest = list.filter(x=>x.s<=0 && x.con.length===0).slice(0,3);
+  $("#dxList").innerHTML = shown.map((x,i)=>`
+    <div class="dx ${i===0?"top":""}">
+      <div class="hd"><h3>${x.name}</h3><span class="pill ${i===0?"":"info"}">${i===0?"más probable":"alternativa"}</span></div>
+      <div class="bar"><i style="width:${Math.round(100*x.s/max)}%"></i></div>
+      ${x.pro.length?`<div class="ev pro"><b>A favor</b> · ${x.pro.join("; ")}</div>`:""}
+      ${x.con.length?`<div class="ev con"><b>En contra</b> · ${x.con.join("; ")}</div>`:""}
+      <div class="ev q"><b>Pregunta que decide</b> · ${x.q}</div>
+      <div class="btnrow" style="margin:8px 0 0"><button class="chip" data-phys="${x.phys}">Manejar esta fisiología →</button></div>
+    </div>`).join("") +
+    (rest.length?`<details><summary>No descartadas por falta de datos (${rest.length})</summary>${rest.map(x=>`<p style="font-size:13.5px"><b>${x.name}</b> — ${x.q}</p>`).join("")}</details>`:"");
+  // combinaciones
+  const combos=[];
+  if (E("dap") && shown.some(x=>["cavsd","civ","tof","tofavsd","coa"].includes(x.id))) combos.push("DAP asociado a otra lesión: su manejo depende de la lesión principal, no del ductus aislado.");
+  if (d.hp>=2 && shown.some(x=>x.phys==="shunt")) combos.push("Cortocircuito con presión pulmonar elevada: definir si la RVP es alta (cortocircuito bidireccional/der→izq) o si solo hay igualación de presiones por defecto grande.");
+  if (C("tam")||C("tsh")) combos.push("Hallazgos sistémicos del Down (TAM / tiroides) que modifican la función miocárdica y la coagulación.");
+  if (combos.length) $("#dxList").innerHTML += `<div class="note info">${combos.join("<br>")}</div>`;
+}
+document.addEventListener("click", e=>{ const b=e.target.closest("[data-phys]"); if(!b) return; S.phys=b.dataset.phys; save(); go("man"); });
+$("#copyBtn").onclick = ()=>{
+  const {list,d} = DX(); const s=list.filter(x=>x.s>0).slice(0,3);
+  const txt = `CRUX 21 — Resumen\nSpO2 pre/post: ${fmt(d.pre,0)}/${fmt(d.post,0)}%  |  Presión pulmonar: ${PH_TXT[d.hp]}${d.psap!==null?` (PSAP≈${fmt(d.psap,0)} mmHg)`:""}\n` +
+    s.map((x,i)=>`${i+1}. ${x.name}\n   A favor: ${x.pro.join("; ")||"—"}\n   En contra: ${x.con.join("; ")||"—"}`).join("\n") +
+    `\nFisiología: ${PHYS[autoPhys()]?.t||"—"}\nPGE1: ${pgeDecision().head}`;
+  const done=()=>toast("Resumen copiado");
+  if (navigator.clipboard) navigator.clipboard.writeText(txt.replace(/&lt;/g,"<").replace(/&gt;/g,">")).then(done,()=>prompt("Copia el texto:",txt)); else prompt("Copia el texto:",txt);
+};
+
+/* ================== MANEJO ================== */
+function wt(){ return num(S.c.peso); }
+function D(label, lo, hi, unit, per){ // dosis por peso
+  const w=wt(); let calc="";
+  if (w && per){ calc = ` → <b>${fmt(lo*w, lo*w<1?3:2)}${hi!==null?`–${fmt(hi*w, hi*w<1?3:2)}`:""} ${per}</b>`; }
+  return `<div class="dose"><span>${label}</span><span>${lo}${hi!==null?`–${hi}`:""} ${unit}${calc}</span></div>`;
+}
+const PHYS = {
+  shunt:{ t:"Cortocircuito izquierda → derecha (DSAV, CIV, CIA, DAP)", tag:"Hiperflujo pulmonar" },
+  sist:{ t:"Obstrucción sistémica / ductus-dependiente sistémico", tag:"Coartación, DSAV desbalanceado" },
+  pulm:{ t:"Flujo pulmonar ductus-dependiente", tag:"Atresia pulmonar, Fallot grave" },
+  tof:{ t:"Fallot no ductus-dependiente y crisis de hipoxemia", tag:"Obstrucción dinámica del TSVD" },
+  hp:{ t:"Hipertensión pulmonar / HPPRN", tag:"RVP alta, VD en riesgo" },
+  peri:{ t:"Derrame pericárdico / TAM / hipotiroidismo", tag:"Llenado y contractilidad" },
+  none:{ t:"Sin cardiopatía significativa", tag:"Vigilancia" }
+};
+function autoPhys(){
+  const {list,d}=DX(); const top=list.find(x=>x.s>0);
+  if (!top) return "none";
+  // Escalamiento por gravedad
+  if (top.id==="tof" && (Ev("flujoant","escaso")||Ev("flujoant","aus") || (d.pre!==null && d.pre<75))) return "pulm";
+  if (top.phys==="shunt" && d.hp===3) return "hp";
+  return top.phys;
+}
+function pgeDecision(){
+  const ph = S.phys || autoPhys(); const d = derived();
+  const restrict = num(S.e.dapmm)!==null && num(S.e.dapmm)<2;
+  if (ph==="pulm") return {cls:"bad",head:"INDICADA — flujo pulmonar ductus-dependiente",
+    body:`Iniciar sin esperar confirmación si la sospecha es fuerte y la SpO₂ cae. Si el ductus está cerrado o es restrictivo: dosis alta de apertura; si está abierto: dosis baja de mantenimiento.`, open:true};
+  if (ph==="sist") return {cls:"bad",head:"INDICADA — circulación sistémica ductus-dependiente",
+    body:`Coartación crítica, arco hipoplásico o DSAV desbalanceado con VI pequeño. Objetivo: pulsos femorales, diuresis, lactato en descenso, flujo ductal der→izq hacia aorta descendente.`, open:true};
+  if (ph==="hp" && (E("vddisf")||d.hp===3) && (restrict || En("dap"))) return {cls:"warn",head:"CONSIDERAR — rescate en HP suprasistémica con VD en falla y ductus restrictivo/cerrado",
+    body:`Reabrir el ductus descomprime el VD (cortocircuito der→izq) a costa de hipoxemia posductal. Decisión individual con cardiología; usar la menor dosis eficaz.`, open:true};
+  if (ph==="tof") return {cls:"info",head:"NO DE RUTINA — reservar si SpO₂ < 75 % sostenida o flujo anterógrado escaso",
+    body:`La mayoría de los Fallot con DSAV o aislados no dependen del ductus al nacer. Reevaluar al cierre ductal (24–72 h).`, open:false};
+  if (ph==="shunt") return {cls:"ok",head:"CONTRAINDICADA — empeora el hiperflujo pulmonar",
+    body:`En DSAV balanceado, CIV, CIA o DAP con cortocircuito izq→der la PGE1 agrega cortocircuito y roba flujo sistémico. Excepción: obstrucción del arco asociada.`, open:false};
+  return {cls:"ok",head:"NO INDICADA",body:"Sin lesión ductus-dependiente identificada.",open:false};
+}
+function renderMan(){
+  const auto = autoPhys(); if (!S.phys) S.phys = auto;
+  const el=$("#physChips");
+  el.innerHTML = Object.keys(PHYS).map(k=>`<button class="chip ${S.phys===k?"on":""}" data-phys2="${k}">${PHYS[k].t.split(" (")[0]}</button>`).join("");
+  $("#physAuto").innerHTML = `Sugerida por el motor: <b>${PHYS[auto].t}</b>${S.phys!==auto?` · <a href="#" id="useAuto">usar la sugerida</a>`:""}`;
+  const ua=$("#useAuto"); if (ua) ua.onclick=(e)=>{e.preventDefault(); S.phys=auto; save(); renderMan();};
+  const p = pgeDecision();
+  $("#pgeCard").innerHTML = `<div class="card"><span class="pill ${p.cls}">Prostaglandina E1</span><h3 style="margin-top:8px">${p.head}</h3><p>${p.body}</p>
+   ${p.open?`<div class="groupT">Esquema de alprostadil</div>
+   ${D("Ductus cerrado/restrictivo (apertura)",0.05,0.1,"mcg/kg/min",null)}
+   ${D("Ductus abierto (mantener)",0.01,0.02,"mcg/kg/min",null)}
+   ${D("Mantenimiento mínimo eficaz",0.005,0.01,"mcg/kg/min",null)}
+   <ul style="font-size:13.5px">
+    <li>Bajar a la menor dosis eficaz en cuanto se confirme la permeabilidad (eco a las 1–2 h si cambió la clínica).</li>
+    <li><b>Apnea</b>: dependiente de dosis, sobre todo en la primera hora; en el Down la hipotonía y la vía aérea la hacen más probable. Monitoreo continuo y equipo de intubación al lado; la cafeína como profilaxis tiene evidencia limitada.</li>
+    <li>Otros: fiebre, vasodilatación/hipotensión, rubor, hipoglucemia, irritabilidad; con uso prolongado, hiperostosis cortical y obstrucción gástrica.</li>
+    <li>Vía exclusiva o compatible; no suspender para traslado.</li>
+   </ul><div class="btnrow"><button class="btn ghost" data-go="dos" onclick="setTimeout(()=>selDrug('pge'),50)">Calcular infusión de PGE1</button></div>`:""}</div>`;
+  $("#manBody").innerHTML = MAN[S.phys] ? MAN[S.phys]() : "";
+  $("#manBody").innerHTML += PEARLS();
+}
+document.addEventListener("click", e=>{ const b=e.target.closest("[data-phys2]"); if(!b) return; S.phys=b.dataset.phys2; save(); renderMan(); });
+
+function step(n, title, body, cls){ return `<div class="card"><span class="pill ${cls||""}">Paso ${n}</span><h3 style="margin-top:8px">${title}</h3>${body}</div>`; }
+const MAN = {
+  shunt: ()=> step(1,"Objetivo fisiológico","<p>Limitar el flujo pulmonar y sostener el gasto sistémico. El enemigo es el exceso de oxígeno y la alcalosis, que bajan la RVP y aumentan el cortocircuito.</p><ul><li>SpO₂ objetivo 92–95 % (no buscar 100 %); FiO₂ mínima.</li><li>Evitar hiperventilación; normocapnia a hipercapnia leve.</li><li>Hb ≥ 12–13 g/dL si hay insuficiencia cardíaca sintomática (mejora transporte de O₂ con menos gasto).</li><li>Aporte calórico alto con volumen controlado (fortificar; sonda si hay fatiga con la toma).</li></ul>","ok") +
+    step(2,"Insuficiencia cardíaca por hiperflujo (habitual a las 2–8 semanas)", D("Furosemida",1,2,"mg/kg/dosis c/12–24 h",'mg') + D("Espironolactona",1,2,"mg/kg/día VO",'mg/día') + `<p style="font-size:13.5px">El IECA (captopril) reduce la poscarga y la insuficiencia valvular AV; iniciar con cautela por hipotensión e insuficiencia renal, idealmente con cardiología.</p>`) +
+    step(3,"Bajo gasto o disfunción ventricular", `<p>Elegir según la presión y la válvula AV:</p>` +
+      D("Dobutamina (disfunción VI con PA normal)",5,10,"mcg/kg/min",null) +
+      D("Milrinona (insuficiencia AV significativa, PA aceptable; sin bolo)",0.25,0.5,"mcg/kg/min",null) +
+      D("Adrenalina (hipotensión con disfunción)",0.02,0.1,"mcg/kg/min",null) +
+      `<div class="note warn">La milrinona baja la RVS y también la RVP: mejora la eyección anterógrada y la insuficiencia AV, pero puede aumentar el cortocircuito izq→der. Vigilar PA y lactato; ajustar en falla renal.</div>`) +
+    step(4,"Cuándo pensar distinto", `<ul><li>Cortocircuito bidireccional o der→izq en las primeras semanas: tratar como HP (pestaña HP), no restringir O₂.</li><li>Signos de obstrucción del arco: cambiar a fisiología sistémica ductus-dependiente.</li><li>Insuficiencia cardíaca refractaria, falla de crecimiento o HP: adelantar la valoración quirúrgica.</li></ul>`) +
+    step(5,"Derivación", `<p>Cardiología pediátrica en todos. DSAV completo: reparación habitual a los <b>3–6 meses</b>; en Down no demorar más allá de 6 meses por el riesgo de enfermedad vascular pulmonar. CIV grande no restrictiva con HP: valoración antes de los 6 meses.</p>`,"info"),
+  sist: ()=> step(1,"PGE1 primero","<p>Abrir y mantener el ductus es el tratamiento. Ver la tarjeta superior para dosis.</p>","bad") +
+    step(2,"Balance Qp/Qs","<ul><li>Evitar FiO₂ alta e hiperventilación: bajan la RVP y desvían flujo del ductus hacia los pulmones (robo sistémico).</li><li>SpO₂ 75–85 % puede ser adecuada si el ductus alimenta la aorta descendente.</li><li>Corregir acidosis, hipoglucemia e hipocalcemia.</li></ul>") +
+    step(3,"Inotrópicos si hay disfunción o bajo gasto", D("Dobutamina",5,10,"mcg/kg/min",null) + D("Adrenalina (baja dosis)",0.02,0.05,"mcg/kg/min",null) + D("Milrinona (solo con PA adecuada)",0.25,0.5,"mcg/kg/min",null) +
+      `<div class="note warn">Evitar vasoconstrictores puros (noradrenalina/fenilefrina a dosis altas): aumentan la poscarga del VI obstruido. Volumen con prudencia.</div>`) +
+    step(4,"Derivación urgente","<p>Traslado con PGE1 en curso, vía aérea evaluada (riesgo de apnea) y acceso venoso doble, a un centro con cirugía cardiovascular pediátrica.</p>","info"),
+  pulm: ()=> step(1,"PGE1 inmediata","<p>Sostener el flujo pulmonar por el ductus. Ver dosis en la tarjeta superior.</p>","bad") +
+    step(2,"Objetivos","<ul><li>SpO₂ 75–85 % es el rango esperado con flujo ductal adecuado.</li><li>Mantener la RVS: la presión aórtica empuja el flujo ductal hacia la AP.</li><li>No perseguir saturaciones altas con FiO₂ elevada.</li></ul>") +
+    step(3,"Hemodinamia", `<p>Los inotrópicos rara vez son necesarios.</p>` + D("Noradrenalina si hipotensión (mantiene RVS)",0.05,0.3,"mcg/kg/min",null) +
+      `<div class="note warn">Evitar milrinona y vasodilatadores sistémicos: al bajar la RVS reducen el flujo ductal hacia los pulmones.</div>`) +
+    step(4,"Derivación","<p>Fístula sistémico-pulmonar o stent ductal según anatomía; definir colaterales (MAPCA).</p>","info"),
+  tof: ()=> step(1,"Fallot sin dependencia ductal","<ul><li>Vigilar el cierre ductal (24–72 h) con SpO₂ y eco.</li><li>Evitar deshidratación, anemia, fiebre y taquicardia.</li><li>Si la SpO₂ cae &lt; 75 % sostenida o el flujo anterógrado es escaso → fisiología ductus-dependiente pulmonar.</li></ul>","info") +
+    step(2,"Crisis de hipoxemia: secuencia", `<ol style="padding-left:18px"><li>Calmar, posición rodillas–pecho, O₂.</li><li>Volumen: SSN 10–20 mL/kg.</li>` +
+      `<li>Morfina 0,05–0,1 mg/kg EV/IM${wt()?` → <b>${fmt(0.05*wt(),3)}–${fmt(0.1*wt(),3)} mg</b>`:""}.</li>` +
+      `<li>Fenilefrina bolo 5–20 mcg/kg${wt()?` → <b>${fmt(5*wt(),1)}–${fmt(20*wt(),1)} mcg</b>`:""}, luego 0,1–0,5 mcg/kg/min (sube RVS y fuerza flujo pulmonar).</li>` +
+      `<li>Betabloqueo para el espasmo infundibular: esmolol carga 0,5 mg/kg y 50–300 mcg/kg/min, o propranolol según protocolo.</li>` +
+      `<li>Ketamina 1–2 mg/kg EV (sedación que conserva la RVS); intubación y relajación si persiste.</li><li>Corregir acidosis. Derivación para paliación o reparación.</li></ol>` +
+      `<div class="note bad">Contraindicados en la crisis: dobutamina, adrenalina, dopamina y milrinona. El inotropismo aumenta la obstrucción dinámica del TSVD.</div>`,"bad"),
+  hp: ()=> step(1,"Medidas de base","<ul><li>SpO₂ preductal 90–95 %; evitar hipoxemia e hiperoxia.</li><li>Normocapnia (PaCO₂ 40–50 mmHg), pH 7,30–7,40; no hiperventilar.</li><li>Reclutamiento pulmonar óptimo (Rx: 8–9 espacios); surfactante si hay enfermedad parenquimatosa.</li><li>Sedación y analgesia; corregir hipoglucemia, hipocalcemia, policitemia y <b>hipotiroidismo</b>.</li></ul>","info") +
+    step(2,"Vasodilatador pulmonar","<p><b>Óxido nítrico inhalado 20 ppm</b> si IO &gt; 15–20 con hipoxemia y función del VI conservada. Evaluar respuesta en 30–60 min; destetar a 5 ppm antes de suspender.</p><div class='note warn'>Con disfunción del VI o DSAV/CIV grande, el iNO puede aumentar el flujo pulmonar y la congestión venosa pulmonar. Confirmar con eco qué limita: el VD o el VI.</div>") +
+    step(3,"Soporte según presión y VD", `<table class="t"><tr><th>Escenario</th><th>Primera elección</th></tr>
+      <tr><td>PA normal + disfunción del VD</td><td>Milrinona 0,25–0,5 mcg/kg/min, sin bolo</td></tr>
+      <tr><td>Hipotensión sistémica (RVP/RVS alta)</td><td>Noradrenalina 0,05–0,5 mcg/kg/min o vasopresina 0,0001–0,0012 U/kg/min</td></tr>
+      <tr><td>Disfunción biventricular con hipotensión</td><td>Adrenalina 0,02–0,1 mcg/kg/min</td></tr>
+      <tr><td>Hipotensión refractaria</td><td>Hidrocortisona 1 mg/kg c/8 h${wt()?` (${fmt(wt(),2)} mg)`:""}</td></tr></table>
+      <div class="note warn">Dopamina a dosis altas eleva la RVP: no es buena opción en HP. Vasopresina: vigilar hiponatremia.</div>`) +
+    step(4,"Si el VD falla con ductus cerrado","<p>Considerar PGE1 de rescate para descomprimir el VD (ver tarjeta superior). Si no hay respuesta, derivación a centro con ECMO.</p>","bad") +
+    step(5,"Particular del Down","<ul><li>Buscar cardiopatía oculta (DSAV parcial, CIA, venas pulmonares).</li><li>Respuesta lenta o recaída: vía aérea, reflujo, hipotiroidismo, hipoplasia pulmonar.</li><li>Seguimiento ecocardiográfico de HP más prolongado que en otros neonatos.</li></ul>"),
+  peri: ()=> step(1,"Valorar repercusión","<ul><li>Colapso diastólico de AD/VD, variación respiratoria de flujos, VCI distendida → taponamiento: pericardiocentesis.</li><li>Derrame sin compromiso: tratar la causa y vigilar.</li></ul>","bad") +
+    step(2,"Buscar la causa","<ul><li><b>TAM</b>: hemograma, frotis manual (blastos), función hepática, coagulación. Interconsulta a hematología; citarabina en dosis baja en TAM con síntomas que amenazan la vida (hidrops, falla hepática, leucocitosis extrema).</li><li><b>Hipotiroidismo</b>: TSH/T4L; levotiroxina mejora la función miocárdica.</li><li>Hidrops: ver el CDSS de hidrops fetal.</li></ul>") +
+    step(3,"Soporte", D("Dobutamina si disfunción con PA normal",5,10,"mcg/kg/min",null) + D("Adrenalina si hipotensión",0.02,0.1,"mcg/kg/min",null) + `<p style="font-size:13.5px">Trombocitopenia del TAM: transfundir antes de procedimientos según protocolo.</p>`),
+  none: ()=> step(1,"Sin cardiopatía significativa","<ul><li>Documentar planos completos (incluido barrido del septo AV).</li><li>Reevaluar si aparece soplo, taquipnea, fatiga con la toma o falla de crecimiento.</li><li>FOP/ductus pequeños: control según cardiología.</li><li>Completar tamizaje AAP 2022: hemograma, TSH, audición, reflejo rojo.</li></ul>","ok")
+};
+function PEARLS(){ return `<details><summary>Perlas del síndrome de Down en la UCIN</summary><ul style="font-size:13.5px">
+  <li>Hipotonía y vía aérea pequeña: más apnea con PGE1 y más fracaso de extubación.</li>
+  <li>Revisar TSH y hemograma antes de atribuir todo al corazón.</li>
+  <li>Plaquetas bajas (TAM): revisar antes de vías centrales y procedimientos.</li>
+  <li>HP posoperatoria más frecuente: planificar con el equipo quirúrgico.</li>
+  <li>Alimentación: succión débil y fatiga; fortificar antes que aumentar volumen.</li>
+  <li>Comunicación con la familia: información actualizada y contacto con grupos de apoyo (AAP 2022).</li></ul></details>`; }
+
+/* ================== DOSIS ================== */
+const DRUGS = {
+  pge:{n:"Alprostadil (PGE1)",u:"mcg/kg/min",d:0.01,r:"0,005–0,1",conc:[[5,"5 mcg/mL (500 mcg en 100 mL)"],[10,"10 mcg/mL (500 mcg en 50 mL)"],[20,"20 mcg/mL (1 000 mcg en 50 mL)"]],cu:"mcg/mL"},
+  dobu:{n:"Dobutamina",u:"mcg/kg/min",d:5,r:"2,5–20",conc:[[500,"500 mcg/mL"],[1000,"1 000 mcg/mL"],[2000,"2 000 mcg/mL"]],cu:"mcg/mL"},
+  milr:{n:"Milrinona",u:"mcg/kg/min",d:0.33,r:"0,25–0,75 (sin bolo)",conc:[[100,"100 mcg/mL"],[200,"200 mcg/mL"]],cu:"mcg/mL"},
+  adre:{n:"Adrenalina",u:"mcg/kg/min",d:0.05,r:"0,02–0,3",conc:[[10,"10 mcg/mL"],[20,"20 mcg/mL"],[40,"40 mcg/mL"]],cu:"mcg/mL"},
+  nora:{n:"Noradrenalina",u:"mcg/kg/min",d:0.1,r:"0,05–0,5",conc:[[10,"10 mcg/mL"],[20,"20 mcg/mL"],[40,"40 mcg/mL"]],cu:"mcg/mL"},
+  dopa:{n:"Dopamina",u:"mcg/kg/min",d:5,r:"2–10 (dosis altas ↑ RVP)",conc:[[800,"800 mcg/mL"],[1600,"1 600 mcg/mL"]],cu:"mcg/mL"},
+  vaso:{n:"Vasopresina",u:"U/kg/min",d:0.0003,r:"0,0001–0,0012",conc:[[0.1,"0,1 U/mL"],[0.2,"0,2 U/mL"]],cu:"U/mL"},
+  feni:{n:"Fenilefrina (infusión)",u:"mcg/kg/min",d:0.2,r:"0,1–0,5",conc:[[10,"10 mcg/mL"],[20,"20 mcg/mL"]],cu:"mcg/mL"},
+  esmo:{n:"Esmolol",u:"mcg/kg/min",d:100,r:"50–300",conc:[[2000,"2 000 mcg/mL"],[10000,"10 000 mcg/mL"]],cu:"mcg/mL"}
+};
+function selDrug(k){ $("#dDrug").value=k; fillConc(); if (DRUGS[k]) $("#dDose").value=DRUGS[k].d; calcDose(); }
+function fillConc(){ const k=$("#dDrug").value, g=DRUGS[k]; $("#dConc").innerHTML=g.conc.map(c=>`<option value="${c[0]}">${c[1]}</option>`).join(""); $("#dDoseLbl").textContent=`Dosis (${g.u}) · rango ${g.r}`; }
+function calcDose(){
+  const k=$("#dDrug").value, g=DRUGS[k], w=num($("#dWt").value), dose=num($("#dDose").value), c=num($("#dConc").value);
+  if (!w||dose===null||!c){ $("#dOut").innerHTML=`<p class="muted">Ingresa peso y dosis.</p>`; return; }
+  const rate = dose*w*60/c;
+  const per1 = c/(w*60); // dosis que entrega 1 mL/h
+  let warn="";
+  if (rate<0.3) warn=`<div class="note warn">Velocidad &lt; 0,3 mL/h: difícil de garantizar con bombas habituales. Usa una concentración más diluida.</div>`;
+  if (rate>w*0.8 && k!=="esmo") warn+=`<div class="note warn">Volumen alto para el peso (${fmt(rate*24/w,0)} mL/kg/día). Considera concentrar.</div>`;
+  const rule = g.cu==="mcg/mL" ? `<p class="muted" style="font-size:13px">Regla de 3: para que <b>1 mL/h = ${fmt(dose,4)} ${g.u}</b>, añadir <b>${fmt(3*w*dose,3)} mg</b> en 50 mL.</p>` : "";
+  $("#dOut").innerHTML = `<div class="big">${fmt(rate,2)} mL/h</div><p class="muted" style="margin:4px 0">1 mL/h = ${fmt(per1,4)} ${g.u} · ${fmt(rate*24,1)} mL/día</p>${rule}${warn}`;
+}
+function renderDose(){
+  const sel=$("#dDrug");
+  if (!sel.options.length){ sel.innerHTML=Object.keys(DRUGS).map(k=>`<option value="${k}">${DRUGS[k].n}</option>`).join(""); fillConc(); $("#dDose").value=DRUGS[sel.value].d; }
+  if (!$("#dWt").value && S.c.peso) $("#dWt").value=S.c.peso;
+  calcDose();
+  const w=num($("#dWt").value);
+  const b=(n,lo,hi,u,per)=>`<div class="dose"><span>${n}</span><span>${lo}${hi!==null?"–"+hi:""} ${u}${w&&per?` → <b>${fmt(lo*w,3)}${hi!==null?"–"+fmt(hi*w,3):""} ${per}</b>`:""}</span></div>`;
+  $("#bolus").innerHTML = b("Furosemida",1,2,"mg/kg/dosis","mg") + b("Morfina (crisis hipoxémica)",0.05,0.1,"mg/kg","mg") + b("Fenilefrina bolo",5,20,"mcg/kg","mcg") +
+    b("Esmolol carga",0.5,null,"mg/kg","mg") + b("Ketamina",1,2,"mg/kg","mg") + b("Hidrocortisona",1,null,"mg/kg c/8 h","mg") + b("SSN 0,9 %",10,20,"mL/kg","mL") + b("Espironolactona",1,2,"mg/kg/día","mg/día") +
+    `<div class="dose"><span>Óxido nítrico inhalado</span><span>20 ppm; destete a 5 ppm</span></div>`;
+}
+["dDrug","dWt","dDose","dConc"].forEach(id=>{ const el=document.getElementById(id); el.addEventListener("input",()=>{ if(id==="dDrug"){ fillConc(); $("#dDose").value=DRUGS[el.value].d; } calcDose(); if(id==="dWt") renderDoseBolus(); }); el.addEventListener("change",()=>{ if(id==="dDrug"){ fillConc(); $("#dDose").value=DRUGS[el.value].d; } calcDose(); }); });
+function renderDoseBolus(){ renderDose(); }
+
+/* ================== ÍCONO / MANIFIESTO / SW ================== */
+function drawIcon(cv, size){
+  const x=cv.getContext("2d"), s=size; cv.width=s; cv.height=s;
+  const g=x.createRadialGradient(s*.5,s*.3,s*.05,s*.5,s*.5,s*.75); g.addColorStop(0,"#22355a"); g.addColorStop(1,"#070b12");
+  x.fillStyle=g; x.fillRect(0,0,s,s);
+  x.save(); x.translate(s*.5,s*.54); const k=s/400;
+  x.beginPath(); x.moveTo(0,140*k); x.bezierCurveTo(-80*k,85*k,-138*k,38*k,-138*k,-30*k); x.bezierCurveTo(-138*k,-75*k,-104*k,-108*k,-62*k,-108*k);
+  x.bezierCurveTo(-34*k,-108*k,-12*k,-92*k,0,-70*k); x.bezierCurveTo(12*k,-92*k,34*k,-108*k,62*k,-108*k); x.bezierCurveTo(104*k,-108*k,138*k,-75*k,138*k,-30*k); x.bezierCurveTo(138*k,38*k,80*k,85*k,0,140*k); x.closePath();
+  const hg=x.createLinearGradient(0,-110*k,0,140*k); hg.addColorStop(0,"#f6a27a"); hg.addColorStop(1,"#9e4426"); x.fillStyle=hg; x.fill();
+  const gg=x.createRadialGradient(0,-4*k,0,0,-4*k,44*k); gg.addColorStop(0,"rgba(255,246,216,1)"); gg.addColorStop(1,"rgba(217,164,65,0)"); x.fillStyle=gg; x.beginPath(); x.arc(0,-4*k,44*k,0,Math.PI*2); x.fill();
+  x.fillStyle="#fff6e8"; x.font=`700 ${92*k}px Georgia, serif`; x.textAlign="center"; x.textBaseline="middle"; x.fillText("21",0,6*k);
+  x.restore(); return cv.toDataURL("image/png");
+}
+(function(){
+  const logo=$("#logoCv"); drawIcon(logo,68);
+  const c180=document.createElement("canvas"), c192=document.createElement("canvas"), c512=document.createElement("canvas");
+  const i180=drawIcon(c180,180), i192=drawIcon(c192,192), i512=drawIcon(c512,512);
+  $("#appleIcon").href=i180; $("#favIcon").href=i192;
+  try{
+    const base = location.href.split("#")[0].split("?")[0];
+    const man = {name:"CRUX 21 · Cardiopatías en síndrome de Down",short_name:"CRUX 21",start_url:base,scope:base.replace(/[^/]*$/,""),display:"standalone",background_color:"#0d1420",theme_color:"#0d1420",
+      icons:[{src:i192,sizes:"192x192",type:"image/png"},{src:i512,sizes:"512x512",type:"image/png",purpose:"any maskable"}]};
+    const l=document.createElement("link"); l.rel="manifest"; l.href=URL.createObjectURL(new Blob([JSON.stringify(man)],{type:"application/manifest+json"})); document.head.appendChild(l);
+  }catch(_){}
+  if ("serviceWorker" in navigator && (location.protocol==="https:" || location.hostname==="localhost" || location.hostname==="127.0.0.1")){
+    window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+  }
+})();
+
+/* ================== INICIO ================== */
+renderClin(); renderEco();
+</script>
+</body>
+</html>
